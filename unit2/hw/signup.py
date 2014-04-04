@@ -25,11 +25,11 @@ FORM = """
             <input type="password" name="password" value="%(password)s"><span id="error">%(error_pass)s</span>
             <br>
 
-            <label>Repeat Password</label>
-            <input type="password" name="validation" value="%(validation)s"><span id="error">%(error_val_pass)s</span>
+            <label>Verify Password</label>
+            <input type="password" name="verify" value="%(verify)s"><span id="error">%(error_val_pass)s</span>
             <br>
 
-            <label>Username</label>
+            <label>Email (Optional)</label>
             <input type="text" name="email" value="%(email)s"><span id="error">%(error_email)s</span>
             <br>
 
@@ -39,12 +39,98 @@ FORM = """
 </html>
 """
 
+FORM_UDACITY = """
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <title>Sign Up</title>
+    <style type="text/css">
+      .label {text-align: right}
+      .error {color: red}
+    </style>
+
+  </head>
+
+  <body>
+    <h2>Signup</h2>
+    <form method="post">
+      <table>
+        <tr>
+          <td class="label">
+            Username
+          </td>
+          <td>
+            <input type="text" name="username" value="%(username)s">
+          </td>
+          <td class="error">
+          %(error_user)s  
+          </td>
+        </tr>
+
+        <tr>
+          <td class="label">
+            Password
+          </td>
+          <td>
+            <input type="password" name="password" value="%(password)s">
+          </td>
+          <td class="error">
+            %(error_pass)s
+          </td>
+        </tr>
+
+        <tr>
+          <td class="label">
+            Verify Password
+          </td>
+          <td>
+            <input type="password" name="verify" value="%(verify)s">
+          </td>
+          <td class="error">
+            %(error_val_pass)s
+          </td>
+        </tr>
+
+        <tr>
+          <td class="label">
+            Email (optional)
+          </td>
+          <td>
+            <input type="text" name="email" value="%(email)s">
+          </td>
+          <td class="error">
+            %(error_email)s
+          </td>
+        </tr>
+      </table>
+
+      <input type="submit">
+    </form>
+  </body>
+
+</html>
+"""
+
+WELCOME = """
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Unit 2 Signup</title>
+    </head>
+
+    <body>
+        <h2>Welcome, %(username)s!</h2>
+    </body>
+</html>
+"""
 USER_RE = re.compile(r"^[a-zA-Z0-9_-]{3,20}$")
 PASS_RE = re.compile(r"^.{3,20}$")
 EMAIL_RE = re.compile(r"^[\S]+@[\S]+\.[\S]+$")
 
 
-############ Validations ###########
+############ verifys ###########
 def valid_username(username):
     return USER_RE.match(username)
 
@@ -56,11 +142,11 @@ def valid_email(email):
 
 ########### Signup #################
 class SignupHandler(webapp2.RequestHandler):
-    def write_form(self, username="", password="", validation="", email="",
+    def write_form(self, username="", password="", verify="", email="",
                     error_user='', error_pass='', error_val_pass='', error_email=''):
         self.response.out.write(FORM %{ 'username': username,
                                         'password': password,
-                                        'validation': validation,
+                                        'verify': verify,
                                         'email': email,
 
                                         'error_user': error_user,
@@ -74,7 +160,7 @@ class SignupHandler(webapp2.RequestHandler):
     def post(self):
         username = self.request.get('username')
         password = self.request.get('password')
-        validate_pass = self.request.get('validation')
+        validate_pass = self.request.get('verify')
         email = self.request.get('email')
 
         if not(valid_username(username) and valid_password(password)):
@@ -84,11 +170,16 @@ class SignupHandler(webapp2.RequestHandler):
         elif( email ):
             if not(valid_email(email)):
                 self.write_form(username, password, validate_pass, email, error_email="Your email is invalid")
+            else:
+                self.redirect("/unit2/welcome?username=%s" %username) #Send to welcome in the same path, this probably change the path
         else:
-            self.redirect("/unit2/hw/welcome?username=%s" %username) #Send to welcome in the same path, this probably change the path
+            self.redirect("/unit2/welcome?username=%s" %username) #Send to welcome in the same path, this probably change the path
 
 ########### Welcome #################
 class WelcomeHandler(webapp2.RequestHandler):
     def get(self):
         username = self.request.get('username')
-        self.response.write('<h2>Welcome %(username)s </h2>' %{'username': username})
+        if not username:
+            self.redirect('signup')
+        else:
+            self.response.write(WELCOME %{'username': username})

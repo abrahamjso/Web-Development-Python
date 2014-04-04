@@ -19,7 +19,7 @@ application = webapp2.WSGIApplication([('/', MainPage),
 										('/unit2/thanks', ThanksHandler),	
 
 										('/unit2/hw/rot13', Unit2Rot13Handler),
-										('/unit2/hw/signup', SignupHandler),
-										('/unit2/hw/welcome', WelcomeHandler)
+										('/unit2/signup', SignupHandler),
+										('/unit2/welcome', WelcomeHandler)
 									], debug = True ) 
 
