@@ -27,5 +27,3 @@ class Unit2Rot13Handler(webapp2.RequestHandler):
 
 def rot13(tx_input):
 	return tx_input.encode('rot13')
-
-print rot13("hola")
