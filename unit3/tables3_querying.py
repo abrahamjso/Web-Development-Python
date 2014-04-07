@@ -88,10 +88,10 @@ links = [
 
 # QUIZ - implement the function link_by_id() that takes a link's ID and returns
 # the Link object itself
-def link_by_id(link_id):
-    for link in links:
-        if link.id == link_id:
-            return link
+#def link_by_id(link_id):
+#    for link in links:
+#        if link.id == link_id:
+#            return link
 
 # QUIZ - implement the function build_link_index() that creates a python dictionary
 # the maps a link's ID to the link itself
@@ -109,5 +109,22 @@ def build_link_index():
         index[link.id] = link
     return index
     #Another answer
+
+link_index = build_link_index()
+
+def link_by_id(link_id):
+    return link_index.get(link_id)
+    
+# QUIZ - implement the function add_new_link() that both adds a link to the 
+# "links" list and updates the link_index dictionary. 
+def add_new_link(link):
+    links.append(link)
+    link_index[link.id] = link
+
+l = Link(50, 1, 1, 1, "title", "url")
+add_new_link(l)
+
+print links[-1]
+print link_by_id(50)
 
 print build_link_index()
