@@ -24,8 +24,8 @@ class Handler(webapp2.RequestHandler):
 class MainPageBlog(Handler):
 	def get(self):
 		posts = db.GqlQuery("SELECT * FROM Blog ORDER BY created DESC LIMIT 10")
-		for post in posts:
-			print vars(post)
+		#for post in posts:
+			#print vars(post)
 		self.render("index.html", posts = posts)
 
 
@@ -50,7 +50,7 @@ class MainPagePost(Handler):
 		if subject and content:
 			a = Blog(subject=subject, content=content)
 			a.put()
-			self.redirect('/unit3/blog') # Redirect to de Main Page
+			self.redirect('/unit3/blog/' + str(a.key().id())) # Redirect to de Main Page
 		else:
 			error = "You need to complete the field"
 			self.get(error, subject, content) # Mandamos Mensaje de error
