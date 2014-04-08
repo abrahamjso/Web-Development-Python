@@ -6,6 +6,8 @@ from unit2.form import *
 from unit2.hw.rot13 import *
 from unit2.hw.signup import *
 
+from unit3.blog import *
+
 class MainPage(webapp2.RequestHandler):
 
 	def get(self):
@@ -20,6 +22,11 @@ application = webapp2.WSGIApplication([('/', MainPage),
 
 										('/unit2/hw/rot13', Unit2Rot13Handler),
 										('/unit2/signup', SignupHandler),
-										('/unit2/welcome', WelcomeHandler)
+										('/unit2/welcome', WelcomeHandler),
+
+										('/unit3/blog', MainPageBlog),
+										('/unit3/blog/([0-9]+)', PermanentLinkPost),
+										('/unit3/blog/newpost', MainPagePost)
+
 									], debug = True ) 
 

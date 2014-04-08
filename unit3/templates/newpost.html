@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>New Post</title>
+        <link type="text/css" rel="stylesheet" href="http://udacity-cs253.appspot.com/static/main.css">
+    </head>
+    <body>
+        <a href="/blog" class="main-title">Blog New Post</a>
+
+        <div id="content">
+        	<form method="post">
+
+        		<div>Subject</div>
+        		<input type="text" name="subject" value="{{subject}}">
+
+        		<div>Contenct</div>
+        		<textarea name="content" value="{{content}}"></textarea>
+
+        		<div class="error">{{error}}</div>
+        		<br>
+        		<input type="submit">
+        	</form>
+       	</div>
+    </body>
+</html>
