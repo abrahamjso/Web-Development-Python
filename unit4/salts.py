@@ -28,7 +28,6 @@ def valid_pw(name, pw, h):
 	if HASH == compare:
 		return True
 	
-
 h = make_pw_hash('spez', 'hunter2')
 print valid_pw('spez', 'hunter2', h)
 
