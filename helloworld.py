@@ -12,7 +12,16 @@ class MainPage(webapp2.RequestHandler):
 
 	def get(self):
 		self.response.headers['Content-Type'] = 'text/plain'
-		self.response.out.write('Hello Udacity')
+		self.response.out.write('Hello Udacity\n\n')
+		visits = self.request.cookies.get('visits', '0')
+
+		if visits.isdigit():
+			visits = int(visits) + 1
+		else:
+			visits = 0
+
+		self.response.headers.add_header('Set-Cookie', 'visits=%s,val=3,val2=ab' % (visits) )
+		self.response.out.write('You are the visitor number %s' %visits)
 
 
 application = webapp2.WSGIApplication([('/', MainPage),
